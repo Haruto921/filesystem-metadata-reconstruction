@@ -1,0 +1,50 @@
+# BROKEN: CI configuration with outdated assumptions
+# Problem 1: Wrong Python version (3.8 instead of 3.11)
+# Problem 2: Deprecated/removed environment variable
+# Problem 3: Invalid cache configuration
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    env:
+      # This environment variable was removed in newer actions
+      PYTHONPATH: /home/runner/work/project/project
+      DEPRECATED_CACHE_KEY: v1-cache
+    
+    strategy:
+      matrix:
+        python-version: ["3.8"]
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+        # Invalid cache key reference
+        cache: 'pip'
+        cache-dependency-path: requirements.txt
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install -e .
+    
+    - name: Run tests
+      run: |
+        pytest tests/ -v
+    
+    - name: Build package
+      run: |
+        python -m build
