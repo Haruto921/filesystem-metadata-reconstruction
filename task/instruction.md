@@ -33,7 +33,7 @@ The project is located at `/workspace/project`.
 Your solution is complete when all of the following commands succeed from the project directory:
 
 - `docker build .` completes without errors
-- `pip install .` installs the package without errors
+- `pip install .` installs the package without errors  
 - `pytest` runs all tests successfully
 - The solution works in a fresh environment (no cached dependencies or machine-specific state)
 
