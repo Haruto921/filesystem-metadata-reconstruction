@@ -1,40 +1,51 @@
-# Submission Form
+# Submission Form - Broken Python Build System Recovery
 
 ## Task Completion Checklist
 
-- [ ] I have investigated the repository structure
-- [ ] I have identified all causes of the build failures
-- [ ] I have made only necessary changes to fix the issues
-- [ ] I have not removed or modified any tests
-- [ ] I have validated my changes work in a clean environment
+- [ ] Docker build completes successfully
+- [ ] Package installation succeeds without errors
+- [ ] All tests pass
+- [ ] CI workflow is properly configured
 
-## Changes Made
+## Files Modified
 
-### Files Modified
+List the configuration files you modified to fix the build system:
 
-List all files you modified and briefly describe the changes:
+1. 
+2. 
+3. 
+4. 
 
-1. **File**: 
-   - **Change**: 
+## Summary of Issues Found
 
-2. **File**: 
-   - **Change**: 
+Briefly describe the issues you identified and fixed:
 
-3. **File**: 
-   - **Change**: 
+### Dependency Issues
 
-4. **File**: 
-   - **Change**: 
 
-### Validation Results
+### Build Configuration Issues
 
-Please confirm the following commands succeed:
 
-- [ ] `docker build .` - Docker image builds successfully
-- [ ] `pip install .` - Package installs without errors  
-- [ ] `pytest` - All tests pass
+### Docker Issues
 
-### Additional Notes
 
-Any additional information about your solution:
+### CI/CD Issues
+
+
+## Verification Commands Run
+
+```bash
+# Docker build
+docker build .
+
+# Package installation
+pip install -e .
+
+# Test suite
+pytest tests/ -v
+```
+
+## Notes
+
+Any additional observations or challenges encountered:
 

@@ -1,7 +1,38 @@
-name = "broken-python-build-system-recovery"
+# Task configuration schema version
+version = "2.0"
+
+# Task metadata (author, difficulty, categorization)
+[metadata]
+author_name = "Terminal-Bench Team"
+author_email = "terminal-bench@example.com"
 difficulty = "hard"
-category = "software-engineering"
-language = "python"
-tags = ["build-system", "dependency-management", "docker", "ci-cd"]
-time_limit = 3600
-memory_limit = 4096
+category = "devops"
+# Options for subcategories: "long_context", "tool_specific", "api_integration", "db_interaction", "ui_building"
+subcategories = ["tool_specific", "api_integration"]
+# The number of milestones in the task (can be zero if not a milestone task)
+number_of_milestones = 0
+# Size of the codebase: minimal -> 0-20 files, small -> 20+ files, large -> 200+ files
+codebase_size = "small"
+# Coding languages used in the oracle solution or required by the agent
+languages = ["python", "bash", "dockerfile", "toml"]
+# For tool_specific, api_integration, and db_interaction subcategories, include the specific tool/db
+tags = ["pip", "docker", "ci-cd", "dependency-resolution", "build-system"]
+# Estimated time to complete (minutes)
+expert_time_estimate_min = 60
+junior_time_estimate_min = 120
+
+# Verifier: runs the test script to check task completion
+[verifier]
+timeout_sec = 300.0
+
+# Agent: limits how long the agent can run when attempting the task
+[agent]
+timeout_sec = 1200.0
+
+# Sandbox environment limits
+[environment]
+allow_internet = false
+build_timeout_sec = 900.0
+cpus = 2
+memory_mb = 4096
+storage_mb = 10240

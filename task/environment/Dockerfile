@@ -1,38 +1,37 @@
 FROM ubuntu:22.04
 
-# Prevent interactive prompts during package installation
 ENV DEBIAN_FRONTEND=noninteractive
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+ENV PYTHON_VERSION=3.11
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl \
+    git \
+    build-essential \
     python3.11 \
-    python3-pip \
-    python3-venv \
     python3.11-venv \
     python3.11-dev \
-    git \
-    gcc \
-    make \
-    curl \
-    grep \
-    sed \
-    tree \
-    build-essential \
+    python3-pip \
+    ca-certificates \
+    gnupg \
+    lsb-release \
     && rm -rf /var/lib/apt/lists/*
 
-# Set Python 3.11 as default
-RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.11 1 \
-    && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.11 1
+RUN curl -sS https://bootstrap.pypa.io/get-pip.py | python3.11
 
-# Upgrade pip and install Python tools
-RUN python -m pip install --upgrade pip \
-    && pip install pytest==8.0.0 build==1.0.3 pip-tools==7.3.0 setuptools==69.0.3 wheel==0.42.0
+RUN python3.11 -m pip install --no-cache-dir \
+    pip==24.0 \
+    setuptools==69.0.3 \
+    wheel==0.42.0 \
+    build==1.0.3 \
+    pip-tools==7.3.0 \
+    pytest==8.0.0
 
-# Set working directory
-WORKDIR /workspace
+WORKDIR /workspace/task/project
 
-# Copy project files
-COPY project/ /workspace/project/
+COPY . .
 
-# Set default command
-CMD ["/bin/bash"]
+RUN python3.11 -m pip install --no-cache-dir -e .
+
+CMD ["pytest", "tests/", "-v"]
