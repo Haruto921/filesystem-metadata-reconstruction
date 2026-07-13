@@ -1,0 +1,20 @@
+[task]
+name = "filesystem-metadata-reconstruction"
+version = "1.0.0"
+difficulty = "hard"
+primary_language = "haskell"
+
+[environment]
+image = "filesystem-metadata-reconstruction:latest"
+workdir = "/workspace"
+timeout = 600
+
+[evaluation]
+visible_tests = ["tests/test.sh", "tests/test_outputs.py"]
+hidden_tests = ["tests/hidden/"]
+oracle = "solution/solve.sh"
+
+[constraints]
+offline = true
+deterministic = true
+non_privileged = true

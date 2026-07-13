@@ -1,0 +1,74 @@
+```
+# Dependencies
+node_modules/
+
+# Logs and temp files
+*.log
+*.tmp
+
+# Environment
+.env
+.env.local
+*.env.*
+
+# Editors
+.vscode/
+.idea/
+
+# Python specific
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.py~
+.Python
+*.so
+*.egg-info/
+.eggs/
+
+# Build artifacts
+build/
+dist/
+*.egg
+*.whl
+*.zip
+*.tar.gz
+*.tar.bz2
+*.tar.xz
+
+# Test coverage
+.coverage
+htmlcov/
+.coverage.*
+.cache/
+
+# Docker
+.dockerenv
+Dockerfile
+docker-compose.yaml
+
+# Archives and binaries
+*.bin
+*.manifest
+*.gz
+*.tar
+*.bz2
+*.xz
+*.7z
+*.rar
+*.zst
+*.lz4
+*.lzh
+*.cab
+*.arj
+*.rpm
+*.deb
+*.Z
+*.lz
+*.lzo
+
+# Metadata and reports
+metadata/
+reports/
+archive/
+```
