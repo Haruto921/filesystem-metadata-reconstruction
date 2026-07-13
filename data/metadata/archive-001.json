@@ -1,0 +1,8 @@
+[
+  {"name": "root", "size": 0, "type": "directory", "checksum": null},
+  {"name": "data", "size": 0, "type": "directory", "checksum": null},
+  {"name": "data/file1.txt", "size": 1024, "type": "file", "checksum": "a1b2c3d4"},
+  {"name": "data/file2.txt", "size": 2048, "type": "file", "checksum": "e5f6g7h8"},
+  {"name": "config", "size": 0, "type": "directory", "checksum": null},
+  {"name": "config/settings.json", "size": 512, "type": "file", "checksum": "i9j0k1l2"}
+]

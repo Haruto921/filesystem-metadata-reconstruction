@@ -1,0 +1,37 @@
+# Terminal-Bench Task Configuration
+# Filesystem Metadata Reconstruction
+
+name = "filesystem-metadata-reconstruction"
+version = "1.0.0"
+description = "Reconstruct filesystem metadata from corrupted archives using Haskell"
+difficulty = "hard"
+language = "haskell"
+
+[environment]
+docker_image = "haskell:9.4.8"
+working_dir = "/app"
+timeout_seconds = 300
+
+[evaluation]
+visible_tests = "tests/visible/run_visible_tests.sh"
+hidden_tests = "tests/hidden/run_hidden_tests.sh"
+oracle_solution = "solution/Main.hs"
+expected_output = "output/reconstruction_report.json"
+
+[scoring]
+# Weights for different evaluation criteria
+correctness_weight = 0.5
+efficiency_weight = 0.2
+code_quality_weight = 0.15
+determinism_weight = 0.15
+
+# Pass threshold (0.0 - 1.0)
+pass_threshold = 0.7
+
+[constraints]
+#禁止网络访问
+allow_network = false
+# Deterministic execution required
+require_determinism = true
+# Maximum file size for output (in bytes)
+max_output_size = 10485760

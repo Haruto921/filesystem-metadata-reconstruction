@@ -1,0 +1,7 @@
+[
+  {"name": "logs", "size": 0, "type": "directory", "checksum": null},
+  {"name": "logs/app.log", "size": 4096, "type": "file", "checksum": "m3n4o5p6"},
+  {"name": "logs/error.log", "size": 1536, "type": "file", "checksum": "q7r8s9t0"},
+  {"name": "temp", "size": 0, "type": "directory", "checksum": null},
+  {"name": "temp/cache.dat", "size": 8192, "type": "file", "checksum": "u1v2w3x4"}
+]
