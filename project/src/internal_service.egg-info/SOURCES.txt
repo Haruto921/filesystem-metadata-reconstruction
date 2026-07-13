@@ -1,0 +1,12 @@
+pyproject.toml
+src/application/__init__.py
+src/application/config.py
+src/application/main.py
+src/application/utils.py
+src/internal_service.egg-info/PKG-INFO
+src/internal_service.egg-info/SOURCES.txt
+src/internal_service.egg-info/dependency_links.txt
+src/internal_service.egg-info/requires.txt
+src/internal_service.egg-info/top_level.txt
+tests/test_config.py
+tests/test_core.py
