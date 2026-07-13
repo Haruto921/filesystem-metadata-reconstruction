@@ -1,0 +1,13 @@
+# BROKEN: This file has conflicting dependency constraints
+# Problem: package-a requires urllib3<2, but package-b requires urllib3>=2
+# This creates an unsolvable dependency conflict
+
+requests==2.31.0
+urllib3==1.26.18
+botocore==1.34.0
+
+# The above combination is intentionally broken:
+# - requests 2.31.0 works with urllib3 1.x or 2.x
+# - botocore 1.34.0 requires urllib3>=1.25.4,<1.27 (conflicts with urllib3 2.x)
+# - But we pinned urllib3==1.26.18 which should work... except botocore 1.34.0 actually needs urllib3<2.1,>=2
+# This creates a ResolutionImpossible error

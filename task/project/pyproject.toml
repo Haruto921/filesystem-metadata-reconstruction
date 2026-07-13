@@ -1,0 +1,35 @@
+# BROKEN: Invalid pyproject.toml with outdated/incorrect configuration
+# Problem 1: build-system uses non-existent backend
+# Problem 2: project metadata has invalid fields
+# Problem 3: dependencies reference the broken requirements.txt
+
+[build-system]
+requires = ["setuptools<45", "wheel"]
+build-backend = "setuptools.build_meta_legacy"
+
+[project]
+name = "internal-service"
+version = "1.0.0"
+description = "Internal Python service"
+requires-python = ">=3.8"
+license = { text = "MIT" }
+authors = [
+    { name = "Engineering Team", email = "engineering@example.com" }
+]
+dependencies = [
+    "requests>=2.28.0",
+    # This will fail because urllib3 conflict in requirements
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "black",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]

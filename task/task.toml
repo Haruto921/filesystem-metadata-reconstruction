@@ -1,0 +1,7 @@
+name = "broken-python-build-system-recovery"
+difficulty = "hard"
+category = "software-engineering"
+language = "python"
+tags = ["build-system", "dependency-management", "docker", "ci-cd"]
+time_limit = 3600
+memory_limit = 4096
