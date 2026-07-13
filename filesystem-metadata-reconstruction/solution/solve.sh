@@ -100,16 +100,23 @@ echo "  Created 4 indexes"
 # Phase 4: Regenerate manifests
 echo "Phase 4: Regenerating manifests..."
 mkdir -p "$METADATA/manifests"
+rm -f "$METADATA/manifests"/*.manifest
 
-# Get unique parent paths
-jq -r '.objects[] | select(.parent_id != null) | .path | dirname' "$METADATA/catalog.json" | sort -u | while read -r parent; do
+# Create root manifest for objects with null parent_id
+ROOT_CHILDREN=$(jq -r '[.objects[] | select(.parent_id == null) | .id]' "$METADATA/catalog.json")
+echo "{\"children\": $ROOT_CHILDREN}" > "$METADATA/manifests/root.manifest"
+
+# Get unique parent paths from catalog (directories that have children)
+PARENT_PATHS=$(jq -r '.objects[] | select(.type == "directory" and .path != null) | .path' "$METADATA/catalog.json" | sort)
+
+for parent in $PARENT_PATHS; do
     manifest_name=$(echo "$parent" | tr '/' '_')
-    if [ "$parent" = "." ]; then
-        manifest_name="root"
-    fi
+    
+    # Get the ID of this parent directory
+    parent_id=$(jq -r --arg p "$parent" '.objects[] | select(.path == $p) | .id' "$METADATA/catalog.json")
     
     # Find children of this directory
-    children=$(jq -r --arg p "$parent" '[.objects[] | select((.path | dirname) == $p and (.path != $p)) | .id]' "$METADATA/catalog.json")
+    children=$(jq -r --arg pid "$parent_id" '[.objects[] | select(.parent_id == $pid) | .id]' "$METADATA/catalog.json")
     
     echo "{\"children\": $children}" > "$METADATA/manifests/${manifest_name}.manifest"
 done

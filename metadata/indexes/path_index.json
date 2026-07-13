@@ -1,0 +1,9 @@
+{
+  "datasets": "obj-001",
+  "documents": "obj-002",
+  "media": "obj-003",
+  "datasets/data.csv": "obj-004",
+  "documents/readme.md": "obj-005",
+  "documents/report.txt": "obj-006",
+  "media/sample.bin": "obj-007"
+}

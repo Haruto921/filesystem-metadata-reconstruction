@@ -1,0 +1,12 @@
+{
+  "status": "complete",
+  "timestamp": "reconstructed",
+  "summary": {
+    "total_objects": 7,
+    "files": 4,
+    "directories": 3,
+    "indexes_regenerated": 4,
+    "manifests_regenerated": 1
+  },
+  "validation": "passed"
+}
