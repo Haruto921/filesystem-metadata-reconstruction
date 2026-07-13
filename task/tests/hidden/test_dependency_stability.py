@@ -1,73 +1,125 @@
-"""Hidden test: Verifies dependency stability and version constraints."""
+"""Hidden tests for dependency stability and edge cases."""
 
 import subprocess
 import tempfile
 import os
-import re
+import shutil
 import pytest
 
 
-def test_dependency_stability():
-    """Test that resolved dependency versions are stable and compatible.
-    
-    This test verifies:
-    - urllib3 version is compatible with all dependencies
-    - No uncontrolled dependency upgrades occur
-    - Version constraints are properly satisfied
-    """
+def test_clean_install_in_fresh_environment():
+    """Test that package installs cleanly in a fresh virtual environment."""
     with tempfile.TemporaryDirectory() as tmpdir:
-        venv_path = os.path.join(tmpdir, "stability_venv")
+        venv_path = os.path.join(tmpdir, "test_venv")
         
         # Create virtual environment
-        subprocess.run(["python", "-m", "venv", venv_path], 
-                      capture_output=True)
+        result = subprocess.run(
+            ["python3.11", "-m", "venv", venv_path],
+            capture_output=True,
+            text=True,
+            timeout=60
+        )
+        assert result.returncode == 0, f"Failed to create venv: {result.stderr}"
         
         pip_path = os.path.join(venv_path, "bin", "pip")
-        
-        # Upgrade pip
-        subprocess.run([pip_path, "install", "--upgrade", "pip"], 
-                      capture_output=True, timeout=120)
+        project_dir = "/workspace/task/project"
         
         # Install the package
         result = subprocess.run(
-            [pip_path, "install", "."],
-            cwd="/workspace/project",
+            [pip_path, "install", "-e", "."],
+            cwd=project_dir,
+            capture_output=True,
+            text=True,
+            timeout=120
+        )
+        assert result.returncode == 0, f"Clean install failed: {result.stderr}"
+        
+        # Verify installation
+        python_path = os.path.join(venv_path, "bin", "python")
+        result = subprocess.run(
+            [python_path, "-c", "import internal_service; print(internal_service.get_service_status())"],
+            capture_output=True,
+            text=True,
+            timeout=30
+        )
+        assert result.returncode == 0, f"Import failed: {result.stderr}"
+        assert result.stdout.strip() == "operational"
+
+
+def test_dependency_version_constraints():
+    """Test that dependency version constraints are properly specified."""
+    project_dir = "/workspace/task/project"
+    
+    # Read requirements.txt
+    with open(os.path.join(project_dir, "requirements.txt"), "r") as f:
+        requirements = f.read()
+    
+    # Check that urllib3 has proper version constraints
+    assert "urllib3" in requirements, "urllib3 not found in requirements.txt"
+    assert ">=" in requirements or "<=" in requirements or "==" in requirements or "<" in requirements or ">" in requirements, \
+        "No version constraints found in requirements.txt"
+    
+    # Verify botocore is present with constraints
+    assert "botocore" in requirements, "botocore not found in requirements.txt"
+
+
+def test_regression_functional_tests():
+    """Test that core functionality works after fixes."""
+    project_dir = "/workspace/task/project"
+    
+    result = subprocess.run(
+        ["python3.11", "-m", "pytest", "tests/", "-v", "-k", "calculate_sum"],
+        cwd=project_dir,
+        capture_output=True,
+        text=True,
+        timeout=120
+    )
+    assert result.returncode == 0, f"Regression tests failed: {result.stderr}\n{result.stdout}"
+    
+    # Verify all calculate_sum tests passed
+    assert "passed" in result.stdout.lower(), "Not all regression tests passed"
+
+
+def test_docker_reproducibility():
+    """Test that Docker builds are reproducible.
+    
+    Note: This test requires Docker to be installed.
+    Skip if Docker is not available in the test environment.
+    """
+    
+    # Check if docker is available
+    if shutil.which("docker") is None:
+        pytest.skip("Docker is not installed in this environment")
+    
+    project_dir = "/workspace/task/project"
+    
+    # Build twice and verify both succeed
+    for i in range(2):
+        result = subprocess.run(
+            ["docker", "build", "-t", f"test-build-{i}", "."],
+            cwd=project_dir,
             capture_output=True,
             text=True,
             timeout=300
         )
-        
-        assert result.returncode == 0, f"Installation failed: {result.stderr}"
-        
-        # Get installed packages
-        result = subprocess.run(
-            [pip_path, "freeze"],
-            capture_output=True,
-            text=True
-        )
-        
-        assert result.returncode == 0
-        
-        # Parse installed versions
-        packages = {}
-        for line in result.stdout.strip().split('\n'):
-            if '==' in line:
-                name, version = line.split('==')
-                packages[name.lower()] = version
-        
-        # Verify urllib3 is installed and has a valid version
-        assert 'urllib3' in packages, "urllib3 not found in installed packages"
-        
-        urllib3_version = packages['urllib3']
-        version_parts = urllib3_version.split('.')
-        major_version = int(version_parts[0])
-        
-        # urllib3 should be either 1.x or 2.x but compatible with all deps
-        assert major_version in [1, 2], f"Unexpected urllib3 major version: {major_version}"
-        
-        # Verify requests is installed
-        assert 'requests' in packages, "requests not found in installed packages"
-        
-        # Verify no conflict errors in installation output
-        assert "ResolutionImpossible" not in result.stderr
-        assert "conflict" not in result.stderr.lower()
+        assert result.returncode == 0, f"Docker build {i} failed: {result.stderr}"
+
+
+def test_no_hardcoded_paths():
+    """Test that configuration files don't contain hardcoded machine-specific paths."""
+    project_dir = "/workspace/task/project"
+    config_files = ["pyproject.toml", "Dockerfile", ".github/workflows/ci.yml"]
+    
+    for config_file in config_files:
+        filepath = os.path.join(project_dir, config_file)
+        if os.path.exists(filepath):
+            with open(filepath, "r") as f:
+                content = f.read()
+            
+            # Check for common hardcoded path patterns
+            assert "/home/" not in content or "/home/ubuntu" not in content, \
+                f"Hardcoded home path found in {config_file}"
+            assert "/Users/" not in content, \
+                f"MacOS user path found in {config_file}"
+            assert "C:\\" not in content, \
+                f"Windows path found in {config_file}"

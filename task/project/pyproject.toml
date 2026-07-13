@@ -5,20 +5,19 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "internal-service"
 version = "1.0.0"
-description = "Internal Python service"
-requires-python = ">=3.11"
-license = { text = "MIT" }
-authors = [
-    { name = "Engineering Team", email = "engineering@example.com" }
-]
+description = "Internal service for company operations"
+requires-python = ">=3.10"
 dependencies = [
     "requests>=2.28.0",
+    "urllib3>=1.26.0,<2.0.0",
+    "botocore>=1.29.0,<1.35.0",
 ]
 
 [project.optional-dependencies]
 dev = [
     "pytest>=7.0.0",
-    "black",
+    "black>=23.0.0",
+    "flake8>=6.0.0",
 ]
 
 [tool.setuptools.packages.find]
@@ -27,3 +26,4 @@ where = ["src"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 python_files = ["test_*.py"]
+python_functions = ["test_*"]

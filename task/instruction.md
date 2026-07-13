@@ -1,46 +1,65 @@
-# Broken Python Build System Recovery
+# Task: Broken Python Build System Recovery
 
 ## Scenario
 
-You are an engineer responsible for restoring a broken Python project.
+You are a DevOps engineer at a mid-sized tech company. A junior developer attempted to modernize an internal Python service's build configuration, dependency management, and CI pipeline. After their changes were merged, the build system stopped working entirely.
 
-A previously working internal Python service has stopped building after a recent dependency maintenance cycle.
+The team cannot:
+- Build the Docker image for deployment
+- Install the package in development environments
+- Run the test suite in CI
+- Resolve dependency conflicts during installation
 
-The repository currently fails during installation, Docker image creation, and CI execution.
+Your task is to investigate the broken repository, identify all issues, and restore the build system to a working state.
 
-## Your Goal
+## Repository Structure
 
-Investigate the repository, identify the causes of the failures, and restore the project so that it can:
+```
+project/
+├── src/
+│   └── internal_service/
+│       ├── __init__.py
+│       └── core.py
+├── tests/
+│   └── test_core.py
+├── pyproject.toml
+├── requirements.txt
+├── Dockerfile
+└── .github/
+    └── workflows/
+        └── ci.yml
+```
 
-- Build successfully inside Docker
-- Install as a Python package
-- Run the existing test suite
-- Work reliably in a clean environment
+## Your Objectives
 
-## Repository Location
+Fix all issues preventing the following success criteria from being met:
 
-The project is located at `/workspace/project`.
+### Success Criteria
 
-## Requirements
+1. **Docker Build**: `docker build .` completes without errors from the project directory
+2. **Package Installation**: `pip install .` succeeds without dependency resolution errors
+3. **Test Suite**: All existing tests pass when running `pytest`
+4. **CI Pipeline**: The GitHub Actions workflow configuration is valid and would execute successfully
 
-1. **Do not remove tests or bypass failures** - Tests represent required behavior
-2. **Make only necessary repository changes** - Fix the root causes, not symptoms
-3. **Ensure reproducibility** - The solution must work in any clean environment
-4. **Validate your changes** - Test thoroughly before finishing
+## Constraints
 
-## Success Criteria
-
-Your solution is complete when all of the following commands succeed from the project directory:
-
-- `docker build .` completes without errors
-- `pip install .` installs the package without errors  
-- `pytest` runs all tests successfully
-- The solution works in a fresh environment (no cached dependencies or machine-specific state)
+- Do not modify the application source code (`src/internal_service/*.py`)
+- Do not modify or add test files (`tests/*.py`)
+- Do not change the core functionality or behavior of the service
+- Fix only the configuration and build-related files
+- Use standard Python packaging conventions
 
 ## Notes
 
-- All fixes must be committed to repository files (not just local environment changes)
-- Avoid hardcoded absolute paths
-- Do not depend on developer machine state
+- The service depends on several external packages including HTTP clients and AWS SDK components
+- Multiple configuration files may contain issues
+- Some issues may be related to version incompatibilities between dependencies
+- CI configuration may have drifted from the actual environment requirements
 
-Begin by exploring the repository structure and reproducing the failures.
+## Deliverables
+
+After fixing all issues, ensure:
+1. The Docker image builds successfully
+2. The package installs cleanly in a fresh environment
+3. All tests pass
+4. The CI workflow is properly configured
