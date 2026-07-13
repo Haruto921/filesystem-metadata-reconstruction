@@ -30,16 +30,15 @@ The project is located at `/workspace/project`.
 
 ## Success Criteria
 
-Your solution is complete when:
+Your solution is complete when all of the following commands succeed from the project directory:
 
-- `docker build .` succeeds from the project directory
+- `docker build .` completes without errors
 - `pip install .` installs the package without errors
 - `pytest` runs all tests successfully
 - The solution works in a fresh environment (no cached dependencies or machine-specific state)
 
 ## Notes
 
-- The project uses Python 3.11
 - All fixes must be committed to repository files (not just local environment changes)
 - Avoid hardcoded absolute paths
 - Do not depend on developer machine state
