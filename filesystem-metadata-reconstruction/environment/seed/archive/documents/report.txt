@@ -1,3 +1,0 @@
-This is a sample report document.
-It contains multiple lines of text.
-Used for testing metadata reconstruction.
