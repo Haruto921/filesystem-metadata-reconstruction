@@ -14,7 +14,7 @@ def test_clean_install_in_fresh_environment():
         
         # Create virtual environment
         result = subprocess.run(
-            ["python3.11", "-m", "venv", venv_path],
+            ["python", "-m", "venv", venv_path],
             capture_output=True,
             text=True,
             timeout=60
@@ -65,11 +65,9 @@ def test_dependency_version_constraints():
 
 def test_regression_functional_tests():
     """Test that core functionality works after fixes."""
-    project_dir = "/workspace/task/project"
-    
+    # Run pytest from the task root directory where tests exist
     result = subprocess.run(
-        ["python3.11", "-m", "pytest", "tests/", "-v", "-k", "calculate_sum"],
-        cwd=project_dir,
+        ["python", "-m", "pytest", "/workspace/task/tests/test_core.py", "-v", "-k", "calculate_sum"],
         capture_output=True,
         text=True,
         timeout=120

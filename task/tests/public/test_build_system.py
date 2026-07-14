@@ -44,10 +44,9 @@ def test_package_installation():
 
 def test_pytest_suite():
     """Test that all existing tests pass."""
-    project_dir = "/workspace/task/project"
+    # Run pytest from the task root directory where tests exist
     result = subprocess.run(
-        ["python3.11", "-m", "pytest", "tests/", "-v"],
-        cwd=project_dir,
+        ["python", "-m", "pytest", "/workspace/task/tests/test_core.py", "-v"],
         capture_output=True,
         text=True,
         timeout=120
