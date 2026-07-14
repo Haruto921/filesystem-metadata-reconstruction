@@ -22,10 +22,10 @@ RUN python -m pip install --no-cache-dir \
 WORKDIR /workspace/task/project
 
 
-COPY project/ .
+COPY project .
 
 
 RUN python -m pip install --no-cache-dir -e .
 
 
-CMD ["pytest", "tests/", "-v"]
+CMD ["sleep", "infinity"]

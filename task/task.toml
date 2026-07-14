@@ -2,92 +2,15 @@
 version = "2.0"
 
 # Actual task identifier
-name = "dependency-resolution-docker-build-fix"
+name = "System-Recovery"
 
 description = """
-Fix a broken Docker-based Python build environment.
-The agent must resolve dependency installation failures,
-repair CI/CD configuration, and make the provided verification
-tests pass.
+Fix broken Python package.
 """
 
-# Task metadata
-[metadata]
-author_name = "Terminal-Bench Team"
-author_email = "terminal-bench@example.com"
-
-difficulty = "hard"
-
-category = "devops"
-
-subcategories = [
-    "tool_specific",
-    "api_integration"
-]
-
-number_of_milestones = 0
-
-codebase_size = "small"
-
-languages = [
-    "python",
-    "bash",
-    "dockerfile",
-    "toml"
-]
-
-tags = [
-    "pip",
-    "docker",
-    "ci-cd",
-    "dependency-resolution",
-    "build-system"
-]
-
-expert_time_estimate_min = 60
-junior_time_estimate_min = 120
-
-
-# Required task definition
-[tasks]
-
-[[tasks.items]]
-id = "main"
-name = "dependency-resolution-docker-build-fix"
-description = """
-Repair the provided repository so that Docker build,
-dependency installation, and automated verification succeed.
-"""
-
-path = "."
-
-
-# Verifier
-[verifier]
-
-timeout_sec = 300.0
-
-command = [
-    "bash",
-    "tests/run_tests.sh"
-]
-
-
-# Agent execution limits
-[agent]
-
-timeout_sec = 1200.0
-
-
-# Sandbox environment
 [environment]
+type = "docker"
 
-allow_internet = false
+[agent]
+timeout = 900
 
-build_timeout_sec = 900.0
-
-cpus = 2
-
-memory_mb = 4096
-
-storage_mb = 10240
