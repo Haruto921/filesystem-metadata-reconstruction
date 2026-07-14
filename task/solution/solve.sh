@@ -60,9 +60,9 @@ EOF
 # Verify
 cd "${PROJECT_DIR}"
 
-python3.11 -m pip install -e .
+pip install -e .
 
-python3.11 -m pytest tests/ -v
+pytest tests/ -v
 
 
 echo "Build system recovery complete!"
