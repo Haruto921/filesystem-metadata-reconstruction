@@ -1,10 +1,29 @@
 ```
-# Compressed archives
-*.tar.gz
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
 
-# Environment files
+# Dependencies
+.venv/
+venv/
+.env
 .env.local
+.env.*
+
+# Tests
+.pytest_cache/
 
 # Logs
 *.log
+
+# Editors
+.vscode/
+.idea/
+
+# Build artifacts
+build/
+dist/
 ```

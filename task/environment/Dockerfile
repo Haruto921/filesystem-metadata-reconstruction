@@ -7,6 +7,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     git \
     build-essential \
+    python3.11-venv \
     && rm -rf /var/lib/apt/lists/*
 
 
